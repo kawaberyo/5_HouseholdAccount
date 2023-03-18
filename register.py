@@ -43,7 +43,8 @@ if __name__ == '__main__':
         'price' : 10000,
         'item' : 'サンプル'
     }
-    
+
     sql = SQLopperation()
-    sql.create_db(sample)
+    sql.create_db()
+    sql.insert(sample)
 
