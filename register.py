@@ -3,18 +3,20 @@ import os.path
 import datetime
 
 class SQLopperation:
+    def __init__(self):
+        self.dbname = 'Account.db'
+    
     def create_db(self):
-        dbname = 'Account.db'
-        if not os.path.isfile(dbname):
-            conn = sqlite3.connect(dbname)
+        if not os.path.isfile(self.dbname):
+            conn = sqlite3.connect(self.dbname)
             # sqliteを操作するカーソルオブジェクトを作成
             cur = conn.cursor()
 
-            # personsというtableを作成してみる
+            # accountというtableを作成してみる
             # 大文字部はSQL文。小文字でも問題ない。
             cur.execute(
-                '''CREATE TABLE persons(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                '''CREATE TABLE account(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     date DATE NOT NULL,
                     category STRING NOT NULL,
                     price INTEGER NOT NULL,
@@ -26,8 +28,12 @@ class SQLopperation:
             conn.commit()
             conn.close()
 
-    def insert(self, datalist):
-        data=1
+    def insert(self, data):
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+
+        conn.commit()
+        conn.close()
 
 
 if __name__ == '__main__':
@@ -35,9 +41,9 @@ if __name__ == '__main__':
         'date' : datetime.date(2022, 3, 18),
         'category' : '食費',
         'price' : 10000,
-        
+        'item' : 'サンプル'
     }
     
     sql = SQLopperation()
-    sql.create_db()
+    sql.create_db(sample)
 
