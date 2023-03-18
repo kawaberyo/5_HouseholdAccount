@@ -31,7 +31,11 @@ class SQLopperation:
     def insert(self, data):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
-
+        
+        sql_sentence = 'INSERT INTO account (date, category, price, name) \
+            VALUES (:date, :category, :price, :item)'
+        cur.execute(sql_sentence, data)
+        
         conn.commit()
         conn.close()
 
