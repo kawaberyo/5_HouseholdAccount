@@ -1,5 +1,6 @@
 import sqlite3
 import os.path
+import datetime
 
 class SQLopperation:
     def create_db(self):
@@ -17,16 +18,26 @@ class SQLopperation:
                     date DATE NOT NULL,
                     category STRING NOT NULL,
                     price INTEGER NOT NULL,
-                    name STRING NOT NULL,
-                    )'
+                    name STRING NOT NULL
+                    )
                 '''
             )
             # データベースへコミット。これで変更が反映される。
             conn.commit()
             conn.close()
 
+    def insert(self, datalist):
+        data=1
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
+    sample = {
+        'date' : datetime.date(2022, 3, 18),
+        'category' : '食費',
+        'price' : 10000,
+        
+    }
+    
     sql = SQLopperation()
     sql.create_db()
 
