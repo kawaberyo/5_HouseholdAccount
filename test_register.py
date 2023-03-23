@@ -32,3 +32,11 @@ class TestSQLopperation(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+"""
+このテストでは、
+setUp()メソッドでSQLopperationオブジェクトとテストデータをセットアップし、
+tearDown()メソッドでテスト後にデータベースファイルを削除します。
+test_insert()メソッドでは、insert()メソッドを呼び出し、
+その後、データベースに挿入されたデータが正しいかどうかを検証します。
+"""
