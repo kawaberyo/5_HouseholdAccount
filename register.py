@@ -1,15 +1,26 @@
 import sqlite3
 import os.path
 import datetime
+import re
 
 
 class ExpenseInput:
     def __init__(self, date: datetime.date, category: str, price: int, item: str):
+        if not isinstance(date, datetime.date):
+            raise ValueError("Invalid date format")
         self.date = date
+
+        if not isinstance(category, str) or not re.match(r'^[a-zA-Z\s]+$', category):
+            raise ValueError("Invalid category")
         self.category = category
+
+        if not isinstance(price, int) or price <= 0:
+            raise ValueError("Invalid price")
         self.price = price
+
+        if not isinstance(item, str) or not re.match(r'^[a-zA-Z\s]+$', item):
+            raise ValueError("Invalid item")
         self.item = item
-        # 入力値が正当なものかを判定する処理を追加することが望ましい
 
 
 class ExpenseRegister:
