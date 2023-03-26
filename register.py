@@ -2,9 +2,18 @@ import sqlite3
 import os.path
 import datetime
 
-class SQLopperation:
-    def __init__(self):
-        self.dbname = 'Account.db'
+class SQLInput: # このクラス名はイマイチ
+  def __init__(self, date:datetime, category:str, price:int, item:str):
+    self.date = date
+    self.category = category
+    self.price = price
+    self.item = item
+    # この辺に書く入力値が正当なものかを判定する処理追加
+
+
+class SQLRegister:
+    def __init__(self, dbname:str):
+        self.dbname = dbname
     
     def create_db(self):
         if not os.path.isfile(self.dbname):
@@ -28,27 +37,31 @@ class SQLopperation:
             conn.commit()
             conn.close()
 
-    def insert(self, data):
+    def insert(self, data: SQLInput):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
-        
-        sql_sentence = 'INSERT INTO account (date, category, price, name) \
-            VALUES (:date, :category, :price, :item)'
-        cur.execute(sql_sentence, data)
-        
+
+        query = """
+            INSERT INTO account
+                (date, category, price, name)
+            values
+                (?, ?, ?, ?)
+            """
+        cur.execute(query,(data.date, data.category, data.price, data.item))
         conn.commit()
         conn.close()
 
 
 if __name__ == '__main__':
-    sample = {
-        'date' : datetime.date(2022, 3, 18),
-        'category' : '食費',
-        'price' : 10000,
-        'item' : 'サンプル'
-    }
+    sample_data = SQLInput(
+        datetime.date(2022, 3, 18),
+        "食費",
+        10000,
+        "サンプル"
+    )
+    input_data = sample_data
 
-    sql = SQLopperation()
+    sql = SQLRegister("Account.db")
     sql.create_db()
-    sql.insert(sample)
+    sql.insert(input_data)
 
