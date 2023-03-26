@@ -21,24 +21,21 @@ class TestExpenseRegister(unittest.TestCase):
         os.remove(self.dbname)
 
     def test_insert(self):
-        try:
-            self.exp_reg.insert(self.sample_data)
 
-            conn = sqlite3.connect(self.dbname)
-            cur = conn.cursor()
-            cur.execute("SELECT * FROM expense")
-            result = cur.fetchone()
+        self.exp_reg.insert(self.sample_data)
 
-            self.assertEqual(result[1], str(self.sample_data.date))
-            self.assertEqual(result[2], self.sample_data.category)
-            self.assertEqual(result[3], self.sample_data.price)
-            self.assertEqual(result[4], self.sample_data.item)
+        # DBから情報を吸い上げて、先に閉じておく(後でDBを削除できるようにするため)
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM expense")
+        result = cur.fetchone()
+        conn.close()
 
-        except Exception as e:
-            print("Error: ", e)
+        self.assertEqual(result[1], str(self.sample_data.date))
+        self.assertEqual(result[2], self.sample_data.category)
+        self.assertEqual(result[3], self.sample_data.price)
+        self.assertEqual(result[4], self.sample_data.item)
 
-        finally:
-            conn.close()
 
 if __name__ == '__main__':
     unittest.main()
