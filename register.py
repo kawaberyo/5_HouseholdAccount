@@ -18,24 +18,30 @@ class ExpenseRegister:
 
     def create_db(self):
         if not os.path.isfile(self.dbname):
-            conn = sqlite3.connect(self.dbname)
-            # sqliteを操作するカーソルオブジェクトを作成
-            cur = conn.cursor()
+            try:
+                conn = sqlite3.connect(self.dbname)
+                # sqliteを操作するカーソルオブジェクトを作成
+                cur = conn.cursor()
 
-            # expenseというtableを作成
-            cur.execute(
-                '''CREATE TABLE expense(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    date DATE NOT NULL,
-                    category STRING NOT NULL,
-                    price INTEGER NOT NULL,
-                    item STRING NOT NULL
-                    )
-                '''
-            )
-            # データベースへコミット。これで変更が反映される。
-            conn.commit()
-            conn.close()
+                # expenseというtableを作成
+                cur.execute(
+                    '''CREATE TABLE expense(
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        date DATE NOT NULL,
+                        category STRING NOT NULL,
+                        price INTEGER NOT NULL,
+                        item STRING NOT NULL
+                        )
+                    '''
+                )
+                # データベースへコミット。これで変更が反映される。
+                conn.commit()
+
+            except Exception as e:
+                print("Error:", e)
+
+            finally:
+                conn.close()
 
     def insert(self, data: ExpenseInput):
         try:
