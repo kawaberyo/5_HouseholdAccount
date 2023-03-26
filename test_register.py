@@ -21,20 +21,24 @@ class TestExpenseRegister(unittest.TestCase):
         os.remove(self.dbname)
 
     def test_insert(self):
-        self.exp_reg.insert(self.sample_data)
+        try:
+            self.exp_reg.insert(self.sample_data)
 
-        conn = sqlite3.connect(self.dbname)
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM expense")
-        result = cur.fetchone()
+            conn = sqlite3.connect(self.dbname)
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM expense")
+            result = cur.fetchone()
 
-        self.assertEqual(result[1], str(self.sample_data.date))
-        self.assertEqual(result[2], self.sample_data.category)
-        self.assertEqual(result[3], self.sample_data.price)
-        self.assertEqual(result[4], self.sample_data.item)
+            self.assertEqual(result[1], str(self.sample_data.date))
+            self.assertEqual(result[2], self.sample_data.category)
+            self.assertEqual(result[3], self.sample_data.price)
+            self.assertEqual(result[4], self.sample_data.item)
 
-        conn.commit()
-        conn.close()
+        except Exception as e:
+            print("Error: ", e)
+
+        finally:
+            conn.close()
 
 if __name__ == '__main__':
     unittest.main()

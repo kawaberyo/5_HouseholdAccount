@@ -3,19 +3,19 @@ import os.path
 import datetime
 
 
-class ExpenseInput: 
-  def __init__(self, date: datetime.date, category: str, price: int, item: str):
-    self.date = date
-    self.category = category
-    self.price = price
-    self.item = item
-    # 入力値が正当なものかを判定する処理を追加することが望ましい
+class ExpenseInput:
+    def __init__(self, date: datetime.date, category: str, price: int, item: str):
+        self.date = date
+        self.category = category
+        self.price = price
+        self.item = item
+        # 入力値が正当なものかを判定する処理を追加することが望ましい
 
 
 class ExpenseRegister:
     def __init__(self, dbname: str):
         self.dbname = dbname
-    
+
     def create_db(self):
         if not os.path.isfile(self.dbname):
             conn = sqlite3.connect(self.dbname)
@@ -38,18 +38,24 @@ class ExpenseRegister:
             conn.close()
 
     def insert(self, data: ExpenseInput):
-        conn = sqlite3.connect(self.dbname)
-        cur = conn.cursor()
+        try:
+            conn = sqlite3.connect(self.dbname)
+            cur = conn.cursor()
 
-        query = """
-            INSERT INTO expense
-                (date, category, price, item)
-            values
-                (?, ?, ?, ?)
-            """
-        cur.execute(query,(data.date, data.category, data.price, data.item))
-        conn.commit()
-        conn.close()
+            query = """
+                INSERT INTO expense
+                    (date, category, price, item)
+                values
+                    (?, ?, ?, ?)
+                """
+            cur.execute(query,(data.date, data.category, data.price, data.item))
+            conn.commit()
+
+        except Exception as e:
+            print("Error:", e)
+
+        finally:
+            conn.close()
 
 
 if __name__ == '__main__':
