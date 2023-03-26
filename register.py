@@ -2,17 +2,18 @@ import sqlite3
 import os.path
 import datetime
 
-class SQLInput: # このクラス名はイマイチ
-  def __init__(self, date:datetime, category:str, price:int, item:str):
+
+class ExpenseInput: 
+  def __init__(self, date: datetime.date, category: str, price: int, item: str):
     self.date = date
     self.category = category
     self.price = price
     self.item = item
-    # この辺に書く入力値が正当なものかを判定する処理追加
+    # 入力値が正当なものかを判定する処理を追加することが望ましい
 
 
-class SQLRegister:
-    def __init__(self, dbname:str):
+class ExpenseRegister:
+    def __init__(self, dbname: str):
         self.dbname = dbname
     
     def create_db(self):
@@ -21,15 +22,14 @@ class SQLRegister:
             # sqliteを操作するカーソルオブジェクトを作成
             cur = conn.cursor()
 
-            # accountというtableを作成してみる
-            # 大文字部はSQL文。小文字でも問題ない。
+            # expenseというtableを作成
             cur.execute(
-                '''CREATE TABLE account(
+                '''CREATE TABLE expense(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     date DATE NOT NULL,
                     category STRING NOT NULL,
                     price INTEGER NOT NULL,
-                    name STRING NOT NULL
+                    item STRING NOT NULL
                     )
                 '''
             )
@@ -37,13 +37,13 @@ class SQLRegister:
             conn.commit()
             conn.close()
 
-    def insert(self, data: SQLInput):
+    def insert(self, data: ExpenseInput):
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
 
         query = """
-            INSERT INTO account
-                (date, category, price, name)
+            INSERT INTO expense
+                (date, category, price, item)
             values
                 (?, ?, ?, ?)
             """
@@ -53,7 +53,7 @@ class SQLRegister:
 
 
 if __name__ == '__main__':
-    sample_data = SQLInput(
+    sample_data = ExpenseInput(
         datetime.date(2022, 3, 18),
         "食費",
         10000,
@@ -61,7 +61,6 @@ if __name__ == '__main__':
     )
     input_data = sample_data
 
-    sql = SQLRegister("Account.db")
-    sql.create_db()
-    sql.insert(input_data)
-
+    exp_reg = ExpenseRegister("Expense.db")
+    exp_reg.create_db()
+    exp_reg.insert(input_data)
