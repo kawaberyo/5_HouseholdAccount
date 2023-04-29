@@ -10,7 +10,7 @@ class ExpenseForm(tk.Tk):
 
         self.create_widgets()
         self.bind_widgets()
-        self.resize_widgets()
+        # self.resize_widgets()
 
     def create_widgets(self):
         # 日付入力欄の作成
@@ -37,17 +37,17 @@ class ExpenseForm(tk.Tk):
         self.name_entry = tk.Entry(self)
         self.name_entry.grid(row=3, column=1)
 
-        # ボタンの作成
-        submit_button = tk.Button(self, text="送信")
-        submit_button.grid(row=4, column=1)
-        
+
     def bind_widgets(self):
+        # ボタンの作成
+        submit_button = tk.Button(self, text="送信", command=self.submit)
+        submit_button.grid(row=4, column=1)
         # ボタンにコマンドを設定する
-        submit_button = self.nametowidget("submit_button")
-        submit_button.config(command=self.submit)
+        #submit_button = self.nametowidget("submit_button")
+        #submit_button.config(command=self.submit)
         
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
-        self.bind("<Configure>", self.resize_widgets)
+        # self.bind("<Configure>", self.resize_widgets)
         
     def resize_widgets(self, event=None):
         # 入力欄の幅をウィンドウの幅に合わせる
