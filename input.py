@@ -10,7 +10,8 @@ class ExpenseForm(tk.Tk):
 
         self.create_widgets()
         self.bind_widgets()
-        # self.resize_widgets()
+        self.arrange_widgets()
+        # self.resize_entry()
 
     def create_widgets(self):
         # 日付入力欄の作成
@@ -40,25 +41,39 @@ class ExpenseForm(tk.Tk):
 
     def bind_widgets(self):
         # ボタンの作成
-        submit_button = tk.Button(self, text="送信", command=self.submit)
+        submit_button = tk.Button(self, text="送信", command=self.submit_form)
         submit_button.grid(row=4, column=1)
-        # ボタンにコマンドを設定する
-        #submit_button = self.nametowidget("submit_button")
-        #submit_button.config(command=self.submit)
-        
-        # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
-        # self.bind("<Configure>", self.resize_widgets)
-        
-    def resize_widgets(self, event=None):
+
+    def submit_form(self):
+        # フォームの内容を取得する
+        date = self.date_entry.get()
+        category = self.category_entry.get()
+        price = self.price_entry.get()
+        name = self.name_entry.get()
+
+        # TODO: フォームの内容をどこかに保存する処理を書く
+        print(f"データ入手・・・日付: {date}、分類: {category}、値段: {price}、名前: {name}")
+
+        # フォームをクリアする
+        self.clear_form()
+
+    def clear_form(self):
+        # フォームの内容をクリアする
+        self.date_entry.delete(0, tk.END)
+        self.category_entry.delete(0, tk.END)
+        self.price_entry.delete(0, tk.END)
+        self.name_entry.delete(0, tk.END)
+
+
+    def arrange_widgets(self, event=None):
         # 入力欄の幅をウィンドウの幅に合わせる
         for child in self.winfo_children():
             if isinstance(child, tk.Entry):
                 child.config(width=self.winfo_width() // 2)
-                
-    def submit(self):
-        # 送信ボタンがクリックされたときの処理を記述する
-        pass
-        
+
+    def resize_entry(self):
+        # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
+        self.bind("<Configure>", self.resize_widgets)
 
 if __name__ == "__main__":
     form = ExpenseForm()
