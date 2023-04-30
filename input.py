@@ -44,7 +44,7 @@ class ExpenseForm(tk.Tk):
         name_label.grid(row=3, column=0)
         self.name_entry = tk.Entry(self, width=30)
         self.name_entry.grid(row=3, column=1)
-
+        # entryをselfにしているのはsubmit_formのインスタンスで使用するため
 
     def bind_widgets(self):
         # ボタンの作成
