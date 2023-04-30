@@ -4,13 +4,13 @@ from tkinter import ttk
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
-        font_style = "メイリオ"  # フォントの種類
-        font_size = 12  # フォントの大きさ
-        self.font = (font_style, font_size)  # フォントの設定
+        self.winsize = {"width":250, "height":170}
+        self.font = ("メイリオ", 12)  # フォントの設定
 
         super().__init__()        # TKから__init__メソッドを呼び出す。
         self.title("入力フォーム")
-        self.wm_minsize(width=250, height=170)
+        self.geometry("250x170")
+        self.wm_minsize(width=self.winsize["width"], height=self.winsize["height"])
         self.window_center()
         self.create_widgets()
         self.bind_widgets()
@@ -94,13 +94,9 @@ class ExpenseForm(tk.Tk):
         self.bind("<Configure>", self.arrange_widgets)
 
     def window_center(self):
-        # メインディスプレイのサイズを取得する
-
-        print("%d×%d" % (self.winfo_width(), self.winfo_height()))
-
         # ウィンドウを中央に移動する
-        x_pos = (self.winfo_screenwidth() - self.winfo_reqwidth()) / 2
-        y_pos = (self.winfo_screenheight() - self.winfo_reqheight()) / 2
+        x_pos = (self.winfo_screenwidth() - self.winsize["width"]) / 2
+        y_pos = (self.winfo_screenheight() - self.winsize["height"]) / 2
         self.geometry("+%d+%d" % (x_pos, y_pos))
 
 if __name__ == "__main__":
