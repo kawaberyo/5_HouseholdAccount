@@ -4,12 +4,6 @@ from tkinter import ttk
 import calendar
 from datetime import datetime, timedelta
 
-# DateEntryのカレンダーを日曜始まりにするためのclass
-class SundayDateEntry(DateEntry):
-    def __init__(self, master=None, **kw):
-        DateEntry.__init__(self, master=None, **kw)
-        self._calendar.firstweekday = 6  # 6 = Sunday
-
 class ExpenseForm(tk.Tk):
     def __init__(self):
 
@@ -27,7 +21,7 @@ class ExpenseForm(tk.Tk):
         # 日付入力欄の作成
         date_label = tk.Label(self, text="日付")
         date_label.grid(row=0, column=0)
-        self.date_entry = SundayDateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2)
+        self.date_entry = DateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2, showweeknumbers=False)
         self.date_entry.grid(row=0, column=1)
 
         # 分類入力欄の作成
