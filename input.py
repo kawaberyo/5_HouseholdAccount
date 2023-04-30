@@ -73,7 +73,6 @@ class ExpenseForm(tk.Tk):
 
     def arrange_widgets(self, event=None):
         # ウィンドウが画面上に表示された後にウィンドウの幅を取得し、入力欄の幅を変更する
-        self.update()
         for child in self.winfo_children():
             if isinstance(child, tk.Entry):
                 margin = 50
