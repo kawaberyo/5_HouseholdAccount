@@ -26,7 +26,7 @@ class ExpenseForm(tk.Tk):
         # 分類入力欄の作成
         # TODO: 分類情報をデータベースから持ってくる処理を書く
         options = ["Option 1", "Option 2", "Option 3"]
-        category_label = tk.Label(self, text="分類", font=self.font)
+        category_label = tk.Label(self, text="分類")
         category_label.grid(row=1, column=0)
         self.category_entry = ttk.Combobox(self, values=options, width=30)
         self.category_entry.grid(row=1, column=1)
