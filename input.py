@@ -12,7 +12,7 @@ class ExpenseForm(tk.Tk):
         self.create_widgets()
         self.bind_widgets()
         self.arrange_widgets()
-        #self.resize_entry()
+        self.resize_entry()
 
     def create_widgets(self):
         # 日付入力欄の作成
@@ -73,11 +73,14 @@ class ExpenseForm(tk.Tk):
         # テキストの測定
 
         for child in self.winfo_children():
-            font = tkFont.Font(family=child.cget("font"), size=child.cget("width"), weight=child.cget("weight"))
-            text_width = font.measure("テキスト")
             if isinstance(child, tk.Entry):
-                child.config(width="{}".format(int(self.winfo_width() / 2)))
-                print(self.winfo_width())
+                px_size = self.winfo_width()
+                child.config(width=int(px_size))
+                print(px_size)
+                font = tkFont.Font(family=child.cget("font"), size=child.cget("width"))
+                font_width = font.measure("テキスト")
+                print(font_width)
+                child.config(width=int(px_size * px_size / font_width / 2))
 
     def resize_entry(self):
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
