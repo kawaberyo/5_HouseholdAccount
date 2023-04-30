@@ -1,18 +1,18 @@
 import tkinter as tk
-import tkinter.font as tkFont
+from tkcalendar import DateEntry
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
 
         super().__init__()        # TKから__init__メソッドを呼び出す。
         self.title("入力フォーム")
-        self.geometry("500x300")
-        self.wm_minsize(width=500, height=300)
+
+        self.wm_minsize(width=300, height=120)
         
         self.create_widgets()
         self.bind_widgets()
         self.arrange_widgets()
-        #self.resize_entry()
+        self.resize_entry()
 
     def create_widgets(self):
         # 日付入力欄の作成
@@ -42,8 +42,8 @@ class ExpenseForm(tk.Tk):
 
     def bind_widgets(self):
         # ボタンの作成
-        submit_button = tk.Button(self, text="送信", command=self.submit_form)
-        submit_button.grid(row=4, column=0, columnspan=2)
+        submit_button = tk.Button(self, text="送信", command=self.submit_form, width=5)
+        submit_button.grid(row=4, column=0, columnspan=3)
 
     def submit_form(self):
         # フォームの内容を取得する
@@ -77,11 +77,7 @@ class ExpenseForm(tk.Tk):
                 px_size = self.winfo_width()
                 child.config(width=int(px_size))
                 borderwidth = child.winfo_reqwidth()
-                print(borderwidth)
-                font = tkFont.Font(family=child.cget("font"), size=child.cget("width"))
-                font_width = font.measure(" ")
-                print(font_width)
-                #child.config(width=int((px_size -200) * (px_size / font_width)))
+                child.config(width=int((px_size-80) * (px_size / borderwidth)))
 
     def resize_entry(self):
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
