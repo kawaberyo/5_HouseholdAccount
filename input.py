@@ -11,10 +11,12 @@ class ExpenseForm(tk.Tk):
         super().__init__()        # TKから__init__メソッドを呼び出す。
         self.title("入力フォーム")
         self.wm_minsize(width=250, height=170)
+        self.window_center()
         self.create_widgets()
         self.bind_widgets()
         self.arrange_widgets()
         self.resize_entry()
+
 
     def create_widgets(self):
         # 日付入力欄の作成
@@ -90,6 +92,16 @@ class ExpenseForm(tk.Tk):
     def resize_entry(self):
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
         self.bind("<Configure>", self.arrange_widgets)
+
+    def window_center(self):
+        # メインディスプレイのサイズを取得する
+
+        print("%d×%d" % (self.winfo_width(), self.winfo_height()))
+
+        # ウィンドウを中央に移動する
+        x_pos = (self.winfo_screenwidth() - self.winfo_reqwidth()) / 2
+        y_pos = (self.winfo_screenheight() - self.winfo_reqheight()) / 2
+        self.geometry("+%d+%d" % (x_pos, y_pos))
 
 if __name__ == "__main__":
     form = ExpenseForm()
