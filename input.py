@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkcalendar import DateEntry
 from tkinter import ttk
-import calendar
-from datetime import datetime, timedelta
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
