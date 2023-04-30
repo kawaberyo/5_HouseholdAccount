@@ -4,12 +4,13 @@ from tkinter import ttk
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
+        font_style = "メイリオ"  # フォントの種類
+        font_size = 12  # フォントの大きさ
+        self.font = (font_style, font_size)  # フォントの設定
 
         super().__init__()        # TKから__init__メソッドを呼び出す。
         self.title("入力フォーム")
-
-        self.wm_minsize(width=250, height=120)
-
+        self.wm_minsize(width=250, height=170)
         self.create_widgets()
         self.bind_widgets()
         self.arrange_widgets()
@@ -23,8 +24,9 @@ class ExpenseForm(tk.Tk):
         self.date_entry.grid(row=0, column=1)
 
         # 分類入力欄の作成
+        # TODO: 分類情報をデータベースから持ってくる処理を書く
         options = ["Option 1", "Option 2", "Option 3"]
-        category_label = tk.Label(self, text="分類")
+        category_label = tk.Label(self, text="分類", font=self.font)
         category_label.grid(row=1, column=0)
         self.category_entry = ttk.Combobox(self, values=options, width=30)
         self.category_entry.grid(row=1, column=1)
@@ -83,6 +85,8 @@ class ExpenseForm(tk.Tk):
                 if isinstance(child, (DateEntry,ttk.Combobox)):
                     margin += 19
                 child.config(width=int((px_size-margin) * (px_size / borderwidth)))
+            # フォントを変更する
+            child.config(font=self.font)
 
     def resize_entry(self):
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
