@@ -6,13 +6,9 @@ from datetime import datetime, timedelta
 
 # DateEntryのカレンダーを日曜始まりにするためのclass
 class SundayDateEntry(DateEntry):
-    def _top_cal(self):
-        '''Override the default _top_cal() method to change the calendar settings'''
-        top = super()._top_cal()
-        # Change the calendar setting to start with Sunday
-        top['calendar'].column_headers = [calendar.day_abbr[(i + 6) % 7] for i in range(7)]
-        top['calendar'].configure(column=0, row=1, sticky='nsew', padx=5, pady=5)
-        return top
+    def __init__(self, master=None, **kw):
+        DateEntry.__init__(self, master=None, **kw)
+        self._calendar.firstweekday = 6  # 6 = Sunday
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
