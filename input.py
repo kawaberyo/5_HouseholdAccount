@@ -1,5 +1,18 @@
 import tkinter as tk
 from tkcalendar import DateEntry
+from tkinter import ttk
+import calendar
+from datetime import datetime, timedelta
+
+# DateEntryのカレンダーを日曜始まりにするためのclass
+class SundayDateEntry(DateEntry):
+    def _top_cal(self):
+        '''Override the default _top_cal() method to change the calendar settings'''
+        top = super()._top_cal()
+        # Change the calendar setting to start with Sunday
+        top['calendar'].column_headers = [calendar.day_abbr[(i + 6) % 7] for i in range(7)]
+        top['calendar'].configure(column=0, row=1, sticky='nsew', padx=5, pady=5)
+        return top
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
@@ -7,8 +20,8 @@ class ExpenseForm(tk.Tk):
         super().__init__()        # TKから__init__メソッドを呼び出す。
         self.title("入力フォーム")
 
-        self.wm_minsize(width=300, height=120)
-        
+        self.wm_minsize(width=250, height=120)
+
         self.create_widgets()
         self.bind_widgets()
         self.arrange_widgets()
@@ -18,13 +31,14 @@ class ExpenseForm(tk.Tk):
         # 日付入力欄の作成
         date_label = tk.Label(self, text="日付")
         date_label.grid(row=0, column=0)
-        self.date_entry = tk.Entry(self, width=30)
+        self.date_entry = SundayDateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2)
         self.date_entry.grid(row=0, column=1)
 
         # 分類入力欄の作成
+        options = ["Option 1", "Option 2", "Option 3"]
         category_label = tk.Label(self, text="分類")
         category_label.grid(row=1, column=0)
-        self.category_entry = tk.Entry(self, width=30)
+        self.category_entry = ttk.Combobox(self, values=options, width=30)
         self.category_entry.grid(row=1, column=1)
 
         # 値段入力欄の作成
@@ -43,7 +57,7 @@ class ExpenseForm(tk.Tk):
     def bind_widgets(self):
         # ボタンの作成
         submit_button = tk.Button(self, text="送信", command=self.submit_form, width=5)
-        submit_button.grid(row=4, column=0, columnspan=3)
+        submit_button.grid(row=4, column=0, columnspan=2)
 
     def submit_form(self):
         # フォームの内容を取得する
@@ -59,25 +73,28 @@ class ExpenseForm(tk.Tk):
         self.clear_form()
 
     def clear_form(self):
-        # フォームの内容をクリアする
+        # フォームの内容をクリアして入力フォームを閉じる。
         self.date_entry.delete(0, tk.END)
         self.category_entry.delete(0, tk.END)
         self.price_entry.delete(0, tk.END)
         self.name_entry.delete(0, tk.END)
+        self.destroy()
 
 
     def arrange_widgets(self, event=None):
         # ウィンドウが画面上に表示された後にウィンドウの幅を取得し、入力欄の幅を変更する
         self.update()
-
-        # テキストの測定
-
         for child in self.winfo_children():
             if isinstance(child, tk.Entry):
+                margin = 50
                 px_size = self.winfo_width()
                 child.config(width=int(px_size))
+                # サイズがピクセル表記で指定させるため、指定したサイズの実際のピクセルサイズを調べる
                 borderwidth = child.winfo_reqwidth()
-                child.config(width=int((px_size-80) * (px_size / borderwidth)))
+                # プルダウン式の入力枠は19ピクセルだけ大きいので、補正する
+                if isinstance(child, (DateEntry,ttk.Combobox)):
+                    margin += 19
+                child.config(width=int((px_size-margin) * (px_size / borderwidth)))
 
     def resize_entry(self):
         # ウィンドウのサイズが変更された場合に入力欄の幅も変更する
