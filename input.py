@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.font as tkFont
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
@@ -68,12 +69,14 @@ class ExpenseForm(tk.Tk):
     def arrange_widgets(self, event=None):
         # ウィンドウが画面上に表示された後にウィンドウの幅を取得し、入力欄の幅を変更する
         self.update()
-        font = tk.font.Font(family="Helvetica", size=10, weight="bold")
+
         # テキストの測定
-        text_width = font.measure("テキスト")
+
         for child in self.winfo_children():
+            font = tkFont.Font(family=child.cget("font"), size=child.cget("width"), weight=child.cget("weight"))
+            text_width = font.measure("テキスト")
             if isinstance(child, tk.Entry):
-                child.config(width="{}p".format(self.winfo_width() // 2))
+                child.config(width="{}".format(int(self.winfo_width() / 2)))
                 print(self.winfo_width())
 
     def resize_entry(self):
