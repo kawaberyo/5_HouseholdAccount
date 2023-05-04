@@ -34,21 +34,7 @@ class ExpenseRegister:
                 # sqliteを操作するカーソルオブジェクトを作成
                 cur = conn.cursor()
 
-                # expenseというtableを作成
-                cur.execute(
-                    '''CREATE TABLE expense(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        date DATE NOT NULL,
-                        category STRING NOT NULL,
-                        price INTEGER NOT NULL,
-                        item STRING NOT NULL
-                        );
-                    '''
-                )
-                # データベースへコミット。これで変更が反映される。
-                conn.commit()
-
-                # categoryというtableを作成
+                # categoryテーブルを作成
                 cur.execute(
                     '''CREATE TABLE category (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,6 +42,19 @@ class ExpenseRegister:
                         );
                     '''
                 )
+
+                # expenseテーブルを作成
+                cur.execute(
+                    '''CREATE TABLE expense(
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        date DATE NOT NULL,
+                        category STRING NOT NULL,
+                        price INTEGER NOT NULL,
+                        item STRING NOT NULL,
+                        FOREIGN KEY (category) REFERENCES category(name)
+                        );
+                    '''
+            )
                 # データベースへコミット。これで変更が反映される。
                 conn.commit()
 
@@ -70,6 +69,18 @@ class ExpenseRegister:
             conn = sqlite3.connect(self.dbname)
             cur = conn.cursor()
 
+            # すでに存在するcategoryの場合はexpenseに追加するだけ
+            cur.execute("SELECT id FROM category WHERE name=?", (data.category,))
+            result = cur.fetchone()
+            if result:
+                category_id = result[0]
+            else:
+                # 新しいcategoryを追加
+                self.add_category(data.category)
+                cur.execute("SELECT id FROM category WHERE name=?", (data.category,))
+                category_id = cur.fetchone()[0]
+
+            # expenseにデータを追加
             query = """
                 INSERT INTO expense
                     (date, category, price, item)
@@ -77,6 +88,21 @@ class ExpenseRegister:
                     (?, ?, ?, ?)
                 """
             cur.execute(query,(data.date, data.category, data.price, data.item))
+            conn.commit()
+
+        except Exception as e:
+            print("Error:", e)
+
+        finally:
+            conn.close()
+
+
+    def add_category(self, category_name):
+        try:
+            conn = sqlite3.connect(self.dbname)
+            cur = conn.cursor()
+
+            cur.execute("INSERT INTO category (name) VALUES (?)", (category_name,))
             conn.commit()
 
         except Exception as e:
