@@ -10,7 +10,7 @@ class ExpenseInput:
             raise ValueError("Invalid date format")
         self.date = date
 
-        if not isinstance(category, str) or not re.match(r'^[a-zA-Z\s]+$', category):
+        if not isinstance(category, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', category):
             raise ValueError("Invalid category")
         self.category = category
 
@@ -18,7 +18,7 @@ class ExpenseInput:
             raise ValueError("Invalid price")
         self.price = price
 
-        if not isinstance(item, str) or not re.match(r'^[a-zA-Z\s]+$', item):
+        if not isinstance(item, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', item):
             raise ValueError("Invalid item")
         self.item = item
 
