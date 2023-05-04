@@ -42,7 +42,18 @@ class ExpenseRegister:
                         category STRING NOT NULL,
                         price INTEGER NOT NULL,
                         item STRING NOT NULL
-                        )
+                        );
+                    '''
+                )
+                # データベースへコミット。これで変更が反映される。
+                conn.commit()
+
+                # categoryというtableを作成
+                cur.execute(
+                    '''CREATE TABLE category (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT UNIQUE NOT NULL
+                        );
                     '''
                 )
                 # データベースへコミット。これで変更が反映される。
