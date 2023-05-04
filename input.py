@@ -62,6 +62,7 @@ class ExpenseForm(tk.Tk):
         print(f"データ入手・・・日付: {date}、分類: {category}、値段: {price}、名前: {name}")
 
         # フォームをクリアする
+        self.information = [date, category, price, name]
         self.clear_form()
 
     def clear_form(self):
@@ -99,6 +100,10 @@ class ExpenseForm(tk.Tk):
         y_pos = (self.winfo_screenheight() - self.winsize["height"]) / 2
         self.geometry("+%d+%d" % (x_pos, y_pos))
 
+    def execute(self):
+        self.mainloop()
+        return self.information
+
 if __name__ == "__main__":
-    form = ExpenseForm()
-    form.mainloop()
+    form = ExpenseForm().execute()
+    print(form)
