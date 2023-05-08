@@ -18,6 +18,7 @@ class ExpenseForm(tk.Tk):
         self.bind_widgets()
         self.arrange_widgets()
         self.resize_entry()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
 
     def create_widgets(self):
@@ -103,9 +104,19 @@ class ExpenseForm(tk.Tk):
         y_pos = (self.winfo_screenheight() - self.winsize["height"]) / 2
         self.geometry("+%d+%d" % (x_pos, y_pos))
 
+    def on_closing(self):
+        # ウィンドウを閉じる前に実行したい処理を書く
+        self.destroy()
+
     def execute(self):
         self.mainloop()
-        return self.information
+        try:
+            for item in self.information:
+                if item == "":
+                    raise ValueError("The list contains an empty string.")
+            return self.information
+        except (ValueError, AttributeError) as e:
+            pass
 
 if __name__ == "__main__":
     form = ExpenseForm().execute()
