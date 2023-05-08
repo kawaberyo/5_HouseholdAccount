@@ -106,19 +106,23 @@ class ExpenseForm(tk.Tk):
 
     def execute(self):
         self.mainloop()
+
+        # アラームウィンドウ表示する際、空ウィンドウを表示させないための対処
+        root = tk.Tk()
+        root.withdraw()
         try:
             for item in self.information:
                 if item == "":
                     raise ValueError("The list contains an empty string.")
             return self.information
         except ValueError as ve:
-            messagebox.showerror("エラー", "ValueErrorが発生しました: {}".format(ve))
+            messagebox.showerror("入力エラー", "空欄があります。", parent=root)
             # ValueErrorが発生した場合の処理
         except AttributeError as ae:
-            messagebox.showerror("強制終了", "×が押されました。: {}".format(ae))
+            messagebox.showerror("強制終了", "×が押されました。" , parent=root)
             # AttributeErrorが発生した場合の処理
         except Exception as e:
-            messagebox.showerror("エラー", "予期せぬエラーが発生しました: {}".format(e))
+            messagebox.showerror("エラー", "予期せぬエラーが発生しました: {}".format(e), parent=root)
             # 上記以外のエラーが発生した場合の処理
 
 
