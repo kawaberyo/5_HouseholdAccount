@@ -121,32 +121,6 @@ class ExpenseForm(tk.Tk):
             messagebox.showerror("エラー", "予期せぬエラーが発生しました: {}".format(e))
             # 上記以外のエラーが発生した場合の処理
 
-class ErrorHanding(tk.Tk):
-    def __init__(self):
-        super().__init__()        # TKから__init__メソッドを呼び出す。
-
-    def show_error():
-        try:
-            # 何らかの処理
-            result = 10 / 0
-        except ValueError as ve:
-            messagebox.showerror("エラー", "ValueErrorが発生しました: {}".format(ve), parent=root)
-            # ValueErrorが発生した場合の処理
-        except AttributeError as ae:
-            messagebox.showerror("エラー", "AttributeErrorが発生しました: {}".format(ae), parent=root)
-            # AttributeErrorが発生した場合の処理
-        except Exception as e:
-            messagebox.showerror("エラー", "予期せぬエラーが発生しました: {}".format(e), parent=root)
-            # 上記以外のエラーが発生した場合の処理
-        else:
-            print("エラーは発生しませんでした")
-        finally:
-            messagebox.showinfo("情報", "処理が終了しました", parent=self)
-
-    def execute(self):
-        button = tk.Button(self, text="エラーを発生させる", command=self.show_error)
-        button.pack()
-        self.mainloop()
 
 if __name__ == "__main__":
     form = ExpenseForm().execute()
