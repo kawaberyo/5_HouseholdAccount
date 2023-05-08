@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkcalendar import DateEntry
 from tkinter import ttk
+import sqlite3
+
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
@@ -26,8 +28,12 @@ class ExpenseForm(tk.Tk):
         self.date_entry.grid(row=0, column=1)
 
         # 分類入力欄の作成
-        # TODO: 分類情報をデータベースから持ってくる処理を書く
-        options = ["Option 1", "Option 2", "Option 3"]
+        # データベースからカテゴリ名を取得
+        conn = sqlite3.connect('Expense.db')
+        cursor = conn.execute('SELECT name FROM category')
+        options = [row[0] for row in cursor.fetchall()]
+        conn.close()
+
         category_label = tk.Label(self, text="分類")
         category_label.grid(row=1, column=0)
         self.category_entry = ttk.Combobox(self, values=options, width=30)
@@ -57,9 +63,6 @@ class ExpenseForm(tk.Tk):
         category = self.category_entry.get()
         price = self.price_entry.get()
         name = self.name_entry.get()
-
-        # TODO: フォームの内容をどこかに保存する処理を書く
-        print(f"データ入手・・・日付: {date}、分類: {category}、値段: {price}、名前: {name}")
 
         # フォームをクリアする
         self.information = [date, category, price, name]
