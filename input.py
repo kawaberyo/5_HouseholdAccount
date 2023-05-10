@@ -7,12 +7,12 @@ import sqlite3
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
-        self.winsize = {"width":240, "height":200}
+        self.winsize = {"width":220, "height":200}
         self.font = ("メイリオ", 12)  # フォントの設定
 
         super().__init__()        # TKから__init__メソッドを呼び出す。
-        self.title("入力フォーム")
-        self.geometry("250x170")
+        self.title("入力")
+        #self.geometry("250x170")
         self.wm_minsize(width=self.winsize["width"], height=self.winsize["height"])
         self.window_center()
         self.create_widgets()
@@ -32,31 +32,31 @@ class ExpenseForm(tk.Tk):
         conn.close()
 
         # 登録Noの作成
-        Number_label = tk.Label(self, text="No")
-        Number_label.grid(row=0, column=0)
+        Number_label = tk.Label(self, text="No：")
+        Number_label.grid(row=0, column=0, sticky="e")
         Register_No = tk.Label(self, text=New_number)
         Register_No.grid(row=0, column=1, sticky="w")
 
         # 日付入力欄の作成
-        date_label = tk.Label(self, text="日付")
-        date_label.grid(row=1, column=0)
+        date_label = tk.Label(self, text="日付：")
+        date_label.grid(row=1, column=0, sticky="e")
         self.date_entry = DateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2, showweeknumbers=False)
         self.date_entry.grid(row=1, column=1)
 
         # 分類入力欄の作成
-        category_label = tk.Label(self, text="分類")
-        category_label.grid(row=2, column=0)
+        category_label = tk.Label(self, text="分類：")
+        category_label.grid(row=2, column=0, sticky="e")
         self.category_entry = ttk.Combobox(self, values=options, width=30)
         self.category_entry.grid(row=2, column=1)
 
         # 値段入力欄の作成
-        price_label = tk.Label(self, text="値段")
-        price_label.grid(row=3, column=0)
+        price_label = tk.Label(self, text="値段：")
+        price_label.grid(row=3, column=0, sticky="e")
         self.price_entry = tk.Entry(self, width=30)
         self.price_entry.grid(row=3, column=1)
 
         # 名称入力欄の作成
-        name_label = tk.Label(self, text="名称")
+        name_label = tk.Label(self, text="名称：")
         name_label.grid(row=4, column=0)
         self.name_entry = tk.Entry(self, width=30)
         self.name_entry.grid(row=4, column=1)
@@ -91,7 +91,7 @@ class ExpenseForm(tk.Tk):
         # ウィンドウが画面上に表示された後にウィンドウの幅を取得し、入力欄の幅を変更する
         for child in self.winfo_children():
             if isinstance(child, tk.Entry):
-                margin = 50
+                margin = 55
                 px_size = self.winfo_width()
                 child.config(width=int(px_size))
                 # サイズがピクセル表記で指定させるため、指定したサイズの実際のピクセルサイズを調べる
