@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 import sqlite3
+import os
+import sys
 
 
 class ExpenseForm(tk.Tk):
@@ -22,6 +24,10 @@ class ExpenseForm(tk.Tk):
 
 
     def create_widgets(self):
+        if not os.path.exists('Expense.db'):
+            messagebox.showerror("エラー", "データベースファイルが存在しません。")
+            self.destroy()
+            sys.exit()
         # データベースからカテゴリ名を取得
         conn = sqlite3.connect('Expense.db')
         cursor = conn.execute('SELECT name FROM category')
