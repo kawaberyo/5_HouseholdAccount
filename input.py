@@ -7,7 +7,7 @@ import sqlite3
 
 class ExpenseForm(tk.Tk):
     def __init__(self):
-        self.winsize = {"width":250, "height":170}
+        self.winsize = {"width":240, "height":200}
         self.font = ("メイリオ", 12)  # フォントの設定
 
         super().__init__()        # TKから__init__メソッドを呼び出す。
@@ -22,41 +22,50 @@ class ExpenseForm(tk.Tk):
 
 
     def create_widgets(self):
-        # 日付入力欄の作成
-        date_label = tk.Label(self, text="日付")
-        date_label.grid(row=0, column=0)
-        self.date_entry = DateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2, showweeknumbers=False)
-        self.date_entry.grid(row=0, column=1)
-
-        # 分類入力欄の作成
         # データベースからカテゴリ名を取得
         conn = sqlite3.connect('Expense.db')
         cursor = conn.execute('SELECT name FROM category')
         options = [row[0] for row in cursor.fetchall()]
+        # データベースからデータ数を取得し、新しいナンバーを取得
+        cursor = conn.execute('SELECT COUNT(*) FROM expense')
+        New_number = cursor.fetchone()[0] + 1
         conn.close()
 
+        # 登録Noの作成
+        Number_label = tk.Label(self, text="No")
+        Number_label.grid(row=0, column=0)
+        Register_No = tk.Label(self, text=New_number)
+        Register_No.grid(row=0, column=1, sticky="w")
+
+        # 日付入力欄の作成
+        date_label = tk.Label(self, text="日付")
+        date_label.grid(row=1, column=0)
+        self.date_entry = DateEntry(self, width=30, background='darkblue', foreground='white', borderwidth=2, showweeknumbers=False)
+        self.date_entry.grid(row=1, column=1)
+
+        # 分類入力欄の作成
         category_label = tk.Label(self, text="分類")
-        category_label.grid(row=1, column=0)
+        category_label.grid(row=2, column=0)
         self.category_entry = ttk.Combobox(self, values=options, width=30)
-        self.category_entry.grid(row=1, column=1)
+        self.category_entry.grid(row=2, column=1)
 
         # 値段入力欄の作成
         price_label = tk.Label(self, text="値段")
-        price_label.grid(row=2, column=0)
+        price_label.grid(row=3, column=0)
         self.price_entry = tk.Entry(self, width=30)
-        self.price_entry.grid(row=2, column=1)
+        self.price_entry.grid(row=3, column=1)
 
         # 名称入力欄の作成
         name_label = tk.Label(self, text="名称")
-        name_label.grid(row=3, column=0)
+        name_label.grid(row=4, column=0)
         self.name_entry = tk.Entry(self, width=30)
-        self.name_entry.grid(row=3, column=1)
+        self.name_entry.grid(row=4, column=1)
         # entryをselfにしているのはsubmit_formのインスタンスで使用するため
 
     def bind_widgets(self):
         # ボタンの作成
         submit_button = tk.Button(self, text="送信", command=self.submit_form, width=5)
-        submit_button.grid(row=4, column=0, columnspan=2)
+        submit_button.grid(row=5, column=0, columnspan=2)
 
     def submit_form(self):
         # フォームの内容を取得する
