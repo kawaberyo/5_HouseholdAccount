@@ -2,25 +2,33 @@ import sqlite3
 import os.path
 import datetime
 import re
+import tkinter as tk
+from tkinter import messagebox
 
 
 class ExpenseInput:
     def __init__(self, date: datetime.date, category: str, price: int, item: str):
-        if not isinstance(date, datetime.date):
-            raise ValueError("Invalid date format")
-        self.date = date
+        try:
+            root = tk.Tk()
+            root.withdraw()
+            if not isinstance(date, datetime.date):
+                raise ValueError("Invalid date format")
+            self.date = date
 
-        if not isinstance(category, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', category):
-            raise ValueError("Invalid category")
-        self.category = category
+            if not isinstance(category, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', category):
+                raise ValueError("Invalid category")
+            self.category = category
 
-        if not isinstance(price, int) or price <= 0:
-            raise ValueError("Invalid price")
-        self.price = price
+            if not isinstance(price, int) or price <= 0:
+                raise ValueError("Invalid price")
+            self.price = price
 
-        if not isinstance(item, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', item):
-            raise ValueError("Invalid item")
-        self.item = item
+            if not isinstance(item, str) or not re.match(r'^[a-zA-Z\sぁ-んァ-ン一-龥]+$', item):
+                raise ValueError("Invalid item")
+            self.item = item
+        except ValueError as ve:
+            messagebox.showerror("入力値エラー", "入力値が不適です。: {}".format(ve), parent=root)
+
 
 
 class ExpenseRegister:
